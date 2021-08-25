@@ -1,49 +1,22 @@
-dicionario = [
-  {
-    "id": "1",
-    "nome_do_produto": "Nicotine Polacrilex",
-    "nome_da_empresa": "Target Corporation",
-    "data_de_fabricacao": "2020-02-18",
-    "data_de_validade": "2022-09-17",
-    "numero_de_serie": "CR25 1551 4467 2549 4402 1",
-    "instrucoes_de_armazenamento": "instrucao 1"
-  },
-  {
-    "id": "2",
-    "nome_do_produto": "fentanyl citrate",
-    "nome_da_empresa": "Target Corporation",
-    "data_de_fabricacao": "2019-12-06",
-    "data_de_validade": "2022-12-25",
-    "numero_de_serie": "FR29 5951 7573 74OY XKGX 6CSG D20",
-    "instrucoes_de_armazenamento": "instrucao 2"
-  },
-  {
-    "id": "3",
-    "nome_do_produto": "NITROUS OXIDE",
-    "nome_da_empresa": "Galena Biopharma",
-    "data_de_fabricacao": "2019-12-22",
-    "data_de_validade": "2023-11-07",
-    "numero_de_serie": "CZ09 8588 0858 8435 9140 2695",
-    "instrucoes_de_armazenamento": "instrucao 3"
-  }
-]
+from collections import Counter
+from datetime import datetime
 
-
-
-class SimpleRepost:
-    # def __init__(self, dict):
-    #     self.dict = dict
-
-    def pegar_maior_ocorrencia():
-        dsnfksdnfknds
-        return xxxx
-
+class SimpleReport:
     @classmethod
-    def generate(cls, dict):
-        # for index in dict:
-        #     print(index)
-        # return f"Data de fabricação mais antiga: YYYY-MM-DD\nData de validade mais próxima: YYYY-MM-DD\nEmpresa com maior quantidade de produtos estocados: NOME DA EMPRESA"
+    def generate(cls, products):
+        companies = Counter(product["nome_da_empresa"] for product in products)
+        most_common_company = companies.most_common(1)[0][0]
 
-# test = SimpleRepost('tegggste')
+        oldest_manufacturing_date = min(product["data_de_fabricacao"] for product in products)
 
-print(SimpleRepost.generate(dicionario))
+        today_date = datetime.now().date()
+        closest_expiration_date = min(
+            (product["data_de_validade"] for product in products),
+            key = lambda date: abs(datetime.strptime(date,'%Y-%m-%d').date() - today_date)
+        )
+
+        return (
+            f"Data de fabricação mais antiga: {oldest_manufacturing_date}\n"
+            f"Data de validade mais próxima: {closest_expiration_date}\n"
+            f"Empresa com maior quantidade de produtos estocados: {most_common_company}\n"
+        )
